@@ -1,18 +1,33 @@
+import ToDoItem from "./ToDoItem";
+import React, {useState} from "react";
+
 export default function ToDoList({ listTaches, setListTaches }) {
-    const handleDelete = (id) => {
-        setListTaches(prevTaches => prevTaches.filter(tache => tache.id !== id));
-    };
+    const [showTasks, setShowTasks] = useState({});
+
+    const toggleTasks = (taskId) => {
+        setShowTasks(prev => ({
+            ...prev,
+            [taskId]: !prev[taskId]
+        }));
+
+    }
 
     return (
-        <div className="App-main">
-            <ul>
+        <main>
+            <h2>Liste des tâches :</h2>
+            <ul className="tacks-list">
                 {listTaches.map(tache => (
                     <li key={tache.id}>
-                        {tache.name}
-                        <button className="delete-button" onClick={() => handleDelete(tache.id) && listTaches.shift(tache.id)}>Supprimer</button>
+                        <div className="task-name">
+                            <h3>{tache.name}</h3>
+                            <button id={"item-" + tache.id} onClick={() => toggleTasks(tache.id)}>
+                                {showTasks[tache.id] ? "⇑" : "⇓"}
+                            </button>
+                        </div>
+                        {showTasks[tache.id] && (<ToDoItem tache={tache} listTaches={listTaches} setListTaches={setListTaches} />)}
                     </li>
                 ))}
             </ul>
-        </div>
+        </main>
     );
 }

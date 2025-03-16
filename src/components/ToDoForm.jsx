@@ -80,6 +80,7 @@ export default function ToDoForm({listTaches, setListTaches}) {
             <input type="text" placeholder="Nom du contact" minLength={10} value={contact} onChange={(e) => setContact(e.target.value)}/>
             <button type="button" onClick={ajouterContact}>Ajouter un contact</button>
 
+            <label>Liste des contacts ajoutés :</label>
             <ul>
                 {contacts.map(contact => (
                     <li key={contact}>

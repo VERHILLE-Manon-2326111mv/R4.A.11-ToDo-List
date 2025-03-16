@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Footer from './layout/Footer';
 import Header from './layout/Header';
 import ToDoList from "./ToDoList";
-import Modal from "./Modal";
 
 // Import des fichiers CSS
 import '../css/App.css';
@@ -18,7 +17,6 @@ import '../css/App.css';
 // ];
 
 function ToDoApp() {
-    const [showPopup, setShowPopup] = useState(false);
 
     const [taches, setTaches] = useState([
         {
@@ -74,10 +72,8 @@ function ToDoApp() {
             {/* Affichage du Main : Liste des tâches*/}
             <ToDoList listTaches={taches} setListTaches={setTaches}/>
 
-            {/* Affichage du Footer : crédits et Main*/}
-            {showPopup && (<Modal setShowPopup={setShowPopup} listTaches={taches} setListTaches={setTaches}/>)}
-
-            <Footer showPopup={showPopup} setShowPopup={setShowPopup} />
+            {/* Affichage du Footer : Crédit et bouton "Ajouter" (+)*/}
+            <Footer listTaches={taches} setListTaches={setTaches} />
         </div>
     );
 }

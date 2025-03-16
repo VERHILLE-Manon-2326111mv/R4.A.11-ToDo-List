@@ -51,12 +51,47 @@ html, body {
   height: 50%;
 }
 
-.App-main{
+main{
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.tacks-list {
+  list-style-type: none;
+  align-items: center;
+  width: 50%;
+}
+
+.tacks-list li {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 1em;
+    padding: 1em;
+    border: 2px solid #1F63DE;
+    border-radius: 0.5em;
+    box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.2);
+}
+
+.task-name{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.task-description{
+    border-top: 2px solid #1F63DE;
+    margin-top: 0.5em;
+    padding-top : 0.5em;
+}
+
+.task-description-end{
+    display: flex;
+    flex-direction: row;
 }
 
 .App-footer {
@@ -72,7 +107,8 @@ html, body {
   position: relative;
 }
 
-.App-footer button {
+.App-footer button, .task-name button,
+.delete-button, .popup button, .task-description button {
   margin-left: auto;
   background-color: #FFFF85;
   color: #000000;
@@ -86,23 +122,6 @@ html, body {
 
 .App-link {
   color: #61dafb;
-}
-
-ul{
-    list-style-type: none;
-    padding: 0;
-}
-
-.delete-button {
-    background-color: #FFFF85;
-    color: #000000;
-    border: none;
-    margin-left: 2em;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
 }
 
 .popup {
@@ -165,8 +184,7 @@ ul{
 .popup input[type="text"],
 .popup textarea,
 .popup select,
-.popup input[type="datetime-local"],
-.popup input[type="checkbox"] {
+.popup input[type="datetime-local"] {
   width: 100%;
   padding: 0.6em;
   margin-top: 0.3em;
@@ -176,26 +194,21 @@ ul{
   box-sizing: border-box;
 }
 
+.popup input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+.popup label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em; /* Espace entre la case et le texte */
+}
+
 .popup textarea {
   height: 5em;
   resize: vertical;
-}
-
-.popup button {
-  background-color: #FFFF85;
-  color: #000000;
-  border: none;
-  padding: 0.6em 1em;
-  font-size: 0.9rem;
-  border-radius: 0.5em;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  margin-top: 0.8em;
-  width: 100%;
-}
-
-.popup button:hover {
-  background-color: #ffdd33;
 }
 
 @media (max-width: 768px) {
@@ -216,18 +229,14 @@ ul{
 
 .popup li {
   padding: 0.4em 0;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #1F63DE;
+  color: black;
 }
 
 .popup li:last-child {
   border-bottom: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+button:hover {
+  background-color: #FED100;
 }
