@@ -21,10 +21,49 @@ function ToDoApp() {
     const [showPopup, setShowPopup] = useState(false);
 
     const [taches, setTaches] = useState([
-        { id: 0, name: "Faire les courses", description:"", urgent: false, enCours: true, contacts: [] },
-        { id: 1, name: "Aller à la salle de sport", description:"", urgent: false, enCours: true, contacts: [] },
-        { id: 2, name: "Réviser le code", description:"", urgent: false, enCours: true, contacts: [] },
-        { id: 3, name: "Finir cette ToDo List", description:"Je veux avoir une bonne note please.", urgent: true, enCours: false, contacts: [] }
+        {
+            id: 0,
+            name: "Faire les courses",
+            description:"",
+            categroy: "",
+            dateCreation: "",
+            dateEcheance: "",
+            urgent: false,
+            enCours: true,
+            contacts: []
+        },
+        {
+            id: 1,
+            name: "Aller à la salle de sport",
+            description:"",
+            categroy: "",
+            dateCreation: "",
+            dateEcheance: "",
+            urgent: false,
+            enCours: true,
+            contacts: []
+        },
+        {
+            id: 2,
+            name: "Réviser le code",
+            description:"", categroy: "",
+            dateCreation: "",
+            dateEcheance: "",
+            urgent: false,
+            enCours: true,
+            contacts: []
+        },
+        {
+            id: 3,
+            name: "Finir cette ToDo List",
+            description:"Je veux avoir une bonne note please.",
+            categroy: "",
+            dateCreation: "",
+            dateEcheance: "",
+            urgent: true,
+            enCours: false,
+            contacts: []
+        }
     ]);
 
     return (
