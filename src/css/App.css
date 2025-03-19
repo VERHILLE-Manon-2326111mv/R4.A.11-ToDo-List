@@ -65,7 +65,7 @@ main{
   width: 50%;
 }
 
-.tacks-list li {
+.tacks-list-li {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -90,8 +90,27 @@ main{
 }
 
 .task-description-end{
+  position: relative;
     display: flex;
     flex-direction: row;
+}
+
+.task-buttons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  gap: 0.5em;
+}
+
+.task-buttons button {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.contacts{
+  display: flex;
+  flex-direction: column;
 }
 
 .App-footer {
@@ -108,7 +127,8 @@ main{
 }
 
 .App-footer button, .task-name button,
-.delete-button, .popup button, .task-description button {
+.popup button, .task-description button,
+.task-description-end button{
   margin-left: auto;
   background-color: #FFFF85;
   color: #000000;
@@ -125,7 +145,7 @@ main{
 }
 
 .popup {
-  position: fixed;
+  position: absolute;
   bottom: 4em;
   right: 2em;
   width: 18em;
@@ -181,10 +201,10 @@ main{
   margin-top: 0.3em;
 }
 
-.popup input[type="text"],
-.popup textarea,
-.popup select,
-.popup input[type="datetime-local"] {
+input[type="text"],
+textarea,
+select,
+input[type="date"] {
   width: 100%;
   padding: 0.6em;
   margin-top: 0.3em;

@@ -17,7 +17,7 @@ export default function ToDoList({ listTaches, setListTaches }) {
             <h2>Liste des tâches :</h2>
             <ul className="tacks-list">
                 {listTaches.map(tache => (
-                    <li key={tache.id}>
+                    <li className="tacks-list-li" key={tache.id}>
                         <div className="task-name">
                             <h3>{tache.name}</h3>
                             <button id={"item-" + tache.id} onClick={() => toggleTasks(tache.id)}>

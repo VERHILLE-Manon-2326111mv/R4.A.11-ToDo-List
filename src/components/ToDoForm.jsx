@@ -22,18 +22,13 @@ export default function ToDoForm({listTaches, setListTaches}) {
     const ajouterTache = () => {
         let date = new Date();
 
-        const formatLocalDate = (dateString) => {
-            let dateObj = new Date(dateString);
-            return dateObj.toLocaleString("fr-FR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" });
-        };
-
         const nouvelleTache = {
             id: listTaches.length,
             name: name,
             description: description,
             category: category,
-            dateCreation: date.toLocaleString(),
-            dateEcheance: formatLocalDate(dateEcheance),
+            dateCreation: date.toLocaleDateString(),
+            dateEcheance: dateEcheance,
             urgent: urgent,
             termine: termine,
             contacts: contacts
@@ -68,7 +63,7 @@ export default function ToDoForm({listTaches, setListTaches}) {
             </select>
 
             <label>Date d'échéance :</label>
-            <input type="datetime-local" id="appt" name="appt" value={dateEcheance} onChange={(e) => setDateEcheance(e.target.value)}/>
+            <input type="date" id="appt" name="appt" value={dateEcheance} onChange={(e) => setDateEcheance(e.target.value)}/>
 
             <label> Tâche urgente :</label>
             <input type="checkbox" id="urgent" name="urgent" checked={urgent} onChange={(e) => setUrgent(e.target.checked)}/>
@@ -85,6 +80,12 @@ export default function ToDoForm({listTaches, setListTaches}) {
                 {contacts.map(contact => (
                     <li key={contact}>
                         {contact}
+                        <button onClick={() => {
+                            setContacts(prevContact =>
+                                prevContact.filter(c => c !== contact
+                                )
+                            );
+                        }}>❌</button>
                     </li>
                 ))}
             </ul>
