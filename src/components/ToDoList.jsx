@@ -1,5 +1,6 @@
 import ToDoItem from "./ToDoItem";
 import React, {useState} from "react";
+import ToDoFilter from "./ToDoFilter";
 
 export default function ToDoList({ listTaches, setListTaches }) {
     const [showTasks, setShowTasks] = useState({});
@@ -14,12 +15,14 @@ export default function ToDoList({ listTaches, setListTaches }) {
 
     return (
         <main>
+            <h2>Filtrer les tâches :</h2>
+            <ToDoFilter />
             <h2>Liste des tâches :</h2>
             <ul className="tacks-list">
                 {listTaches.map(tache => (
                     <li className="tacks-list-li" key={tache.id}>
                         <div className="task-name">
-                            <h3>{tache.name}</h3>
+                            <h3>{tache.title}</h3>
                             <button id={"item-" + tache.id} onClick={() => toggleTasks(tache.id)}>
                                 {showTasks[tache.id] ? "⇑" : "⇓"}
                             </button>

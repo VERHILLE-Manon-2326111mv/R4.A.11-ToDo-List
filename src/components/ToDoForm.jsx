@@ -2,21 +2,23 @@ import React, {useEffect, useState} from "react";
 
 export default function ToDoForm({listTaches, setListTaches}) {
     // Création des useStates
-    const [name, setName] = useState("");
+    const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [category, setCategory] = useState("");
     const [dateEcheance, setDateEcheance] = useState("");
     const [urgent, setUrgent] = useState(false);
-    const [termine, setTermine] = useState(false);
+    const [done, setDone] = useState(false);
     const [contact, setContact] = useState("");
     const [contacts, setContacts] = useState([]);
 
     // Fonction pour ajouter un contact à la liste
     const ajouterContact = () => {
-        setContacts([...contacts, contact]);
+        const newContact = {
+            name: contact
+        }
+        setContacts([...contacts, newContact]);
         setContact("")
     };
-
 
     // Fonction pour ajouter une tâche à la liste
     const ajouterTache = () => {
@@ -24,13 +26,12 @@ export default function ToDoForm({listTaches, setListTaches}) {
 
         const nouvelleTache = {
             id: listTaches.length,
-            name: name,
+            title: title,
             description: description,
-            category: category,
-            dateCreation: date.toLocaleDateString(),
-            dateEcheance: dateEcheance,
+            date_creation: date.toLocaleDateString(),
+            date_echeance: dateEcheance,
             urgent: urgent,
-            termine: termine,
+            done: done,
             contacts: contacts
         };
 
@@ -38,18 +39,18 @@ export default function ToDoForm({listTaches, setListTaches}) {
 
         setListTaches(prevTaches => [...prevTaches, nouvelleTache]);
 
-        setName("");
+        setTitle("");
         setDescription("");
         setCategory("");
         setDateEcheance("");
         setUrgent(false);
-        setTermine(false);
+        setDone(false);
         setContacts([]);
     };
     // Mise en page du formulaire
     return <div>
             <label>Nom de la tâche :</label>
-            <input type="text" placeholder="Nom de la tâche" minLength={5} value={name} onChange={(e) => setName(e.target.value)} required/>
+            <input type="text" placeholder="Nom de la tâche" minLength={5} value={title} onChange={(e) => setTitle(e.target.value)} required/>
 
             <label>Description :</label>
             <textarea id="Description" value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
@@ -69,7 +70,7 @@ export default function ToDoForm({listTaches, setListTaches}) {
             <input type="checkbox" id="urgent" name="urgent" checked={urgent} onChange={(e) => setUrgent(e.target.checked)}/>
 
             <label>Tâche complétée :</label>
-            <input type="checkbox" id="termine" name="termine" checked={termine} onChange={(e) => setTermine(e.target.checked)}/>
+            <input type="checkbox" id="termine" name="termine" checked={done} onChange={(e) => setDone(e.target.checked)}/>
 
             <label>Liste de contacts :</label>
             <input type="text" placeholder="Nom du contact" minLength={10} value={contact} onChange={(e) => setContact(e.target.value)}/>
@@ -77,12 +78,15 @@ export default function ToDoForm({listTaches, setListTaches}) {
 
             <label>Liste des contacts ajoutés :</label>
             <ul>
-                {contacts.map(contact => (
-                    <li key={contact}>
-                        {contact}
+                {contacts.map((contact, index) => (
+                    <li key={index}>
+                        {contact.name}
                         <button onClick={() => {
+                            const newContact = {
+                                name: contact.value
+                            };
                             setContacts(prevContact =>
-                                prevContact.filter(c => c !== contact
+                                prevContact.filter(c => c !== newContact
                                 )
                             );
                         }}>❌</button>

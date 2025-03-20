@@ -8,72 +8,25 @@ import ToDoList from "./ToDoList";
 // Import des fichiers CSS
 import '../css/App.css';
 
-// Tableau exemple de tâches
-// const taches = [
-//     {id: 1, name : "Faire les courses", enCours : true},
-//     {id: 2, name : "Aller à la salle de sport", enCours : false},
-//     {id: 3, name : "Réviser le code", enCours : true},
-//     {id: 4, name : "Finir cette ToDo List", enCours : true}
-// ];
+// Import des fichiers JSON
+import todos from "../json/backup.json";
 
 function ToDoApp() {
 
-    const [taches, setTaches] = useState([
-        {
-            id: 0,
-            name: "Faire les courses",
-            description:"",
-            categroy: "",
-            dateCreation: "",
-            dateEcheance: "",
-            urgent: false,
-            enCours: true,
-            contacts: []
-        },
-        {
-            id: 1,
-            name: "Aller à la salle de sport",
-            description:"",
-            categroy: "",
-            dateCreation: "",
-            dateEcheance: "",
-            urgent: false,
-            enCours: true,
-            contacts: []
-        },
-        {
-            id: 2,
-            name: "Réviser le code",
-            description:"", categroy: "",
-            dateCreation: "",
-            dateEcheance: "",
-            urgent: false,
-            enCours: true,
-            contacts: []
-        },
-        {
-            id: 3,
-            name: "Finir cette ToDo List",
-            description:"Je veux avoir une bonne note please.",
-            categroy: "",
-            dateCreation: "",
-            dateEcheance: "",
-            urgent: true,
-            enCours: false,
-            contacts: []
-        }
-    ]);
+    {/*Création de la liste des tâches via le fichier JSON*/}
+    const [taches, setTaches] = useState(todos.taches || []);
 
     return (
         <div className="App">
             {/* Affichage de l'Header */}
-            <Header nbTaches={taches.length} nbTachesEnCours={taches.filter(tache => tache.enCours).length} />
+            <Header nbTaches={taches.length} nbTachesEnCours={taches.filter(tache => !tache.done).length} />
 
             {/* Affichage du Main : Liste des tâches*/}
             <ToDoList listTaches={taches} setListTaches={setTaches}/>
 
             {/* Affichage du Footer : Crédit et bouton "Ajouter" (+)*/}
             <Footer listTaches={taches} setListTaches={setTaches} />
+
         </div>
     );
 }
