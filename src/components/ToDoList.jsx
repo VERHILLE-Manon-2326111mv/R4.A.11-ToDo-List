@@ -95,7 +95,15 @@ export default function ToDoList({ listTaches, setListTaches }) {
                 {listTaches.map(tache => (
                     <li className="tacks-list-li" key={tache.id}>
                         <div className="task-name">
-                            <h3>{tache.title}</h3>
+                            <input type="checkbox" checked={tache.done} onChange={(e) => {
+                                setListTaches(prevTaches =>
+                                    prevTaches.map(t =>
+                                        t.id === tache.id ? { ...t, done: e.target.checked } : t
+                                    )
+                                );
+                            }}></input>
+                            <h3 className={"task-" + tache.done}>{tache.title}</h3>
+                            <p>Fini le {tache.date_echeance}</p>
                             <button id={"item-" + tache.id} onClick={() => toggleTasks(tache.id)}>
                                 {showTasks[tache.id] ? "⇑" : "⇓"}
                             </button>
