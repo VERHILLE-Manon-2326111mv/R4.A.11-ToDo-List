@@ -126,9 +126,7 @@ main{
   position: relative;
 }
 
-.App-footer button, .task-name button,
-.popup button, .task-description button,
-.task-description-end button{
+button{
   margin-left: auto;
   background-color: #FFFF85;
   color: #000000;
@@ -138,6 +136,10 @@ main{
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+  background-color: #FED100;
 }
 
 .App-link {
@@ -255,8 +257,4 @@ input[type="date"] {
 
 .popup li:last-child {
   border-bottom: none;
-}
-
-button:hover {
-  background-color: #FED100;
 }
