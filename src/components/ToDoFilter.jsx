@@ -1,4 +1,4 @@
-export default function ToDoFilter({trier, filtrer}){
+export default function ToDoFilter({trier, filtrer, rechercher}){
     return (
         <div id="filter-buttons">
             <select onChange={(e) => trier(e.target.value)}>
@@ -17,7 +17,7 @@ export default function ToDoFilter({trier, filtrer}){
                 <option value="done">Tâches effectuées</option>
             </select>
 
-            <input type="search" minLength={3} placeholder="Rechercher une tâche" />
+            <input type="search" minLength={3} placeholder="Rechercher une tâche" onChange={(e) => rechercher(e.target.value)}/>
         </div>
     );
 }

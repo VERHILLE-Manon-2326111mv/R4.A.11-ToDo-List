@@ -7,6 +7,7 @@ export default function ToDoList({ listTaches, setListTaches }) {
     const [ordreTri, setOrdreTri] = useState("tri_date_echeance");
     const [typeFiltre, setTypeFiltre] = useState("all");
     const [listTachesOriginal, setListTachesOriginal] = useState([...listTaches]);
+    const [searchQuery, setSearchQuery] = useState("");
 
     const toggleTasks = (taskId) => {
         setShowTasks(prev => ({
@@ -27,7 +28,6 @@ export default function ToDoList({ listTaches, setListTaches }) {
     useEffect(() => {
         let newList = [...listTachesOriginal];
 
-        // Appliquer le filtre
         switch (typeFiltre) {
             case "not_done":
                 newList = newList.filter(tache => !tache.done);
@@ -39,7 +39,13 @@ export default function ToDoList({ listTaches, setListTaches }) {
                 break;
         }
 
-        // Appliquer le tri
+        if (searchQuery.length >= 3) {
+            newList = newList.filter(tache =>
+                normalizeString(tache.title).includes(normalizeString(searchQuery)) ||
+                normalizeString(tache.description).includes(normalizeString(searchQuery))
+            );
+        }
+
         switch (ordreTri) {
             case "tri_alpha_croissant":
                 newList.sort((a, b) => normalizeString(stripLeadingNumbers(a.title))
@@ -56,7 +62,7 @@ export default function ToDoList({ listTaches, setListTaches }) {
                 newList.sort((a, b) => parseDate(b.date_creation) - parseDate(a.date_creation));
                 break;
             case "tri_date_echeance_croissant":
-                newList.sort((a, b) => parseDate(a.date_echeance) - parseDate(b.date_echeance));
+                newList.sort((a, b) => parseDate(a.date_echeance ) - parseDate(b.date_echeance));
                 break;
             case "tri_date_echeance_decroissant":
                 newList.sort((a, b) => parseDate(b.date_echeance) - parseDate(a.date_echeance));
@@ -69,7 +75,8 @@ export default function ToDoList({ listTaches, setListTaches }) {
         }
 
         setListTaches(newList);
-    }, [ordreTri, typeFiltre, listTachesOriginal]);
+    }, [ordreTri, typeFiltre, searchQuery, listTachesOriginal]);
+
 
     const trier = (value) => {
         setOrdreTri(value);
@@ -82,7 +89,7 @@ export default function ToDoList({ listTaches, setListTaches }) {
     return (
         <main>
             <h2>Filtrer les tâches :</h2>
-            <ToDoFilter trier={trier} filtrer={filtrer}/>
+            <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery}/>
             <h2>Liste des tâches :</h2>
             <ul className="tacks-list">
                 {listTaches.map(tache => (
