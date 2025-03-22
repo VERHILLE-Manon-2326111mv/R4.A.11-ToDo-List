@@ -1,8 +1,10 @@
 import ToDoForm from "./ToDoForm";
 import CategoryForm from "./CategoryForm";
 import React, {useState} from "react";
+import {useToDo} from "../context/ToDoContext";
 
-export default function Modal({ setShowPopup, listTaches, setListTaches }) {
+export default function Modal({ setShowPopup }) {
+    const { tasks, setTasks } = useToDo();
     const [formType, setFormType] = useState("");
     const [selectedForm, setSelectedForm] = useState("");
 
@@ -25,7 +27,7 @@ export default function Modal({ setShowPopup, listTaches, setListTaches }) {
                 <button className={selectedForm === "category" ? "selected" : ""} onClick={showCategoryForm}>Créer une catégorie</button>
             </div>
 
-            {formType === "task" && <ToDoForm listTaches={listTaches} setListTaches={setListTaches}/>}
+            {formType === "task" && <ToDoForm />}
             {formType === "category" && <CategoryForm />}
 
         </div>

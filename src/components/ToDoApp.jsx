@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+
+// Import des useContext
+import {ToDoProvider} from "../context/ToDoContext";
 
 // Import des composants
 import Footer from './layout/Footer';
@@ -8,26 +11,22 @@ import ToDoList from "./ToDoList";
 // Import des fichiers CSS
 import '../css/App.css';
 
-// Import des fichiers JSON
-import todos from "../json/backup.json";
-
 function ToDoApp() {
 
-    {/*Création de la liste des tâches via le fichier JSON*/}
-    const [taches, setTaches] = useState(todos.taches || []);
-
     return (
-        <div className="App">
-            {/* Affichage de l'Header */}
-            <Header nbTaches={taches.length} nbTachesEnCours={taches.filter(tache => !tache.done).length} />
+        // Mise en place de l'useContext.
+        <ToDoProvider>
+            <div className="App">
+                {/* Affichage de l'Header */}
+                <Header />
 
-            {/* Affichage du Main : Liste des tâches*/}
-            <ToDoList listTaches={taches} setListTaches={setTaches}/>
+                {/* Affichage du Main : Liste des tâches*/}
+                <ToDoList />
 
-            {/* Affichage du Footer : Crédit et bouton "Ajouter" (+)*/}
-            <Footer listTaches={taches} setListTaches={setTaches} />
-
-        </div>
+                {/* Affichage du Footer : Crédit et bouton "Ajouter" (+)*/}
+                <Footer />
+            </div>
+        </ToDoProvider>
     );
 }
 

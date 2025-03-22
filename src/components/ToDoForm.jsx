@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
+import {useToDo} from "../context/ToDoContext";
 
-export default function ToDoForm({listTaches, setListTaches}) {
+export default function ToDoForm() {
     // Création des useStates
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -10,6 +11,8 @@ export default function ToDoForm({listTaches, setListTaches}) {
     const [done, setDone] = useState(false);
     const [contact, setContact] = useState("");
     const [contacts, setContacts] = useState([]);
+
+    const {tasks, setTasks} = useToDo();
 
     // Fonction pour ajouter un contact à la liste
     const ajouterContact = () => {
@@ -25,7 +28,7 @@ export default function ToDoForm({listTaches, setListTaches}) {
         let date = new Date();
 
         const nouvelleTache = {
-            id: listTaches.length,
+            id: tasks.length,
             title: title,
             description: description,
             date_creation: date.toLocaleDateString(),
@@ -37,7 +40,7 @@ export default function ToDoForm({listTaches, setListTaches}) {
 
         console.log(nouvelleTache);
 
-        setListTaches(prevTaches => [...prevTaches, nouvelleTache]);
+        setTasks(prevTaches => [...prevTaches, nouvelleTache]);
 
         setTitle("");
         setDescription("");

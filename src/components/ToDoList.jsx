@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useToDo } from "../context/ToDoContext";
 import ToDoItem from "./ToDoItem";
 import ToDoFilter from "./ToDoFilter";
 
-export default function ToDoList({ listTaches, setListTaches }) {
+export default function ToDoList() {
+    const { tasks, setTasks } = useToDo();
     const [showTasks, setShowTasks] = useState({});
     const [ordreTri, setOrdreTri] = useState("tri_date_echeance");
     const [typeFiltre, setTypeFiltre] = useState("all");
-    const [listTachesOriginal, setListTachesOriginal] = useState([...listTaches]);
+    const listTachesOriginal = [...tasks];
     const [searchQuery, setSearchQuery] = useState("");
 
     const toggleTasks = (taskId) => {
@@ -62,7 +64,7 @@ export default function ToDoList({ listTaches, setListTaches }) {
                 newList.sort((a, b) => parseDate(b.date_creation) - parseDate(a.date_creation));
                 break;
             case "tri_date_echeance_croissant":
-                newList.sort((a, b) => parseDate(a.date_echeance ) - parseDate(b.date_echeance));
+                newList.sort((a, b) => parseDate(a.date_echeance) - parseDate(b.date_echeance));
                 break;
             case "tri_date_echeance_decroissant":
                 newList.sort((a, b) => parseDate(b.date_echeance) - parseDate(a.date_echeance));
@@ -74,9 +76,8 @@ export default function ToDoList({ listTaches, setListTaches }) {
                 break;
         }
 
-        setListTaches(newList);
+        setTasks(newList); // 🔥 Mise à jour du contexte
     }, [ordreTri, typeFiltre, searchQuery, listTachesOriginal]);
-
 
     const trier = (value) => {
         setOrdreTri(value);
@@ -92,23 +93,23 @@ export default function ToDoList({ listTaches, setListTaches }) {
             <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery}/>
             <h2>Liste des tâches :</h2>
             <ul className="tacks-list">
-                {listTaches.map(tache => (
-                    <li className="tacks-list-li" key={tache.id}>
+                {tasks.map(task => (
+                    <li className="tacks-list-li" key={task.id}>
                         <div className="task-name">
-                            <input type="checkbox" checked={tache.done} onChange={(e) => {
-                                setListTaches(prevTaches =>
+                            <input type="checkbox" checked={task.done} onChange={(e) => {
+                                setTasks(prevTaches =>
                                     prevTaches.map(t =>
-                                        t.id === tache.id ? { ...t, done: e.target.checked } : t
+                                        t.id === task.id ? { ...t, done: e.target.checked } : t
                                     )
                                 );
                             }}></input>
-                            <h3 className={"task-" + tache.done}>{tache.title}</h3>
-                            <p>Fini le {tache.date_echeance}</p>
-                            <button id={"item-" + tache.id} onClick={() => toggleTasks(tache.id)}>
-                                {showTasks[tache.id] ? "⇑" : "⇓"}
+                            <h3 className={"task-" + task.done}>{task.title}</h3>
+                            <p>Fini le {task.date_echeance}</p>
+                            <button id={"item-" + task.id} onClick={() => toggleTasks(task.id)}>
+                                {showTasks[task.id] ? "⇑" : "⇓"}
                             </button>
                         </div>
-                        {showTasks[tache.id] && (<ToDoItem tache={tache} listTaches={listTaches} setListTaches={setListTaches} />)}
+                        {showTasks[task.id] && (<ToDoItem task={task}/>)}
                     </li>
                 ))}
             </ul>

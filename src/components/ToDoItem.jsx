@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import { useToDo } from "../context/ToDoContext";
 
-export default function ToDoItem({ tache, listTaches, setListTaches }) {
+export default function ToDoItem({ task }) {
     const handleDelete = (id) => {
-        setListTaches(prevTaches => prevTaches.filter(tache => tache.id !== id));
+        setTasks(prevTaches => prevTaches.filter(tache => tache.id !== id));
     };
-
+    const {setTasks} = useToDo()
     const [showPopup, setShowPopup] = useState(false);
     const [nameContact, setNameContact] = useState("");
     const [showAddContact, setShowAddContact] = useState(false);
@@ -13,15 +14,15 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
         <div className="task-description">
             <h4>Description :</h4>
             {!showPopup ? (
-                <p>{tache.description}</p>
+                <p>{task.description}</p>
             ) : (
                 <textarea
                     id="Description"
-                    value={tache.description || ''}
+                    value={task.description || ''}
                     onChange={(e) => {
-                        setListTaches(prevTaches =>
+                        setTasks(prevTaches =>
                             prevTaches.map(t =>
-                                t.id === tache.id ? { ...t, description: e.target.value } : t
+                                t.id === task.id ? { ...t, description: e.target.value } : t
                             )
                         );
                     }}
@@ -29,19 +30,19 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
             )}
 
             <h4>Date de création :</h4>
-            <p>Créée le {tache.date_creation}</p>
+            <p>Créée le {task.date_creation}</p>
 
             <h4>Échéance :</h4>
             {!showPopup ? (
-                <p>Se termine le {tache.date_echeance}</p>
+                <p>Se termine le {task.date_echeance}</p>
             ) : (
                 <input
                     type="date"
-                    value={tache.date_echeance || ''}
+                    value={task.date_echeance || ''}
                     onChange={(e) => {
-                        setListTaches(prevTaches =>
+                        setTasks(prevTaches =>
                             prevTaches.map(t =>
-                                t.id === tache.id ? { ...t, date_echeance: e.target.value } : t
+                                t.id === task.id ? { ...t, date_echeance: e.target.value } : t
                             )
                         );
                     }}
@@ -50,15 +51,15 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
 
             <h4>Degré de la tâche :</h4>
             {!showPopup ? (
-                <p>{tache.urgent ? "Urgent" : "Pas urgent"}</p>
+                <p>{task.urgent ? "Urgent" : "Pas urgent"}</p>
             ) : (
                 <input
                     type="checkbox"
-                    checked={tache.urgent}
+                    checked={task.urgent}
                     onChange={(e) => {
-                        setListTaches(prevTaches =>
+                        setTasks(prevTaches =>
                             prevTaches.map(t =>
-                                t.id === tache.id ? { ...t, urgent: e.target.checked } : t
+                                t.id === task.id ? { ...t, urgent: e.target.checked } : t
                             )
                         );
                     }}
@@ -67,15 +68,15 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
 
             <h4>Statut :</h4>
             {!showPopup ? (
-                <p>{tache.done ? "En cours" : "Terminée"}</p>
+                <p>{task.done ? "En cours" : "Terminée"}</p>
             ) : (
                 <input
                     type="checkbox"
-                    checked={tache.done}
+                    checked={task.done}
                     onChange={(e) => {
-                        setListTaches(prevTaches =>
+                        setTasks(prevTaches =>
                             prevTaches.map(t =>
-                                t.id === tache.id ? { ...t, done: e.target.checked } : t
+                                t.id === task.id ? { ...t, done: e.target.checked } : t
                             )
                         );
                     }}
@@ -86,9 +87,9 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
                 <div className="contacts">
                     <h4>Contacts :</h4>
                     {!showPopup ? (
-                        tache.contacts.length > 0 ? (
+                        task.contacts.length > 0 ? (
                             <ul>
-                                {tache.contacts.map((contact, index) => (
+                                {task.contacts.map((contact, index) => (
                                     <li key={index}>{contact.name}</li>
                                 ))}
                             </ul>
@@ -97,7 +98,7 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
                         )
                     ) : (
                         <div>
-                            {tache.contacts.map((contact, index) => (
+                            {task.contacts.map((contact, index) => (
                                 <div key={index}>
                                     <input
                                         type="text"
@@ -107,9 +108,9 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
                                                 name: e.target.value
                                             };
 
-                                            setListTaches(prevTaches =>
+                                            setTasks(prevTaches =>
                                                 prevTaches.map(t =>
-                                                    t.id === tache.id
+                                                    t.id === task.id
                                                         ? {
                                                             ...t,
                                                             contacts: t.contacts.map((c, i) =>
@@ -122,9 +123,9 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
                                         }}
                                     />
                                     <button onClick={() => {
-                                        setListTaches(prevTaches =>
+                                        setTasks(prevTaches =>
                                             prevTaches.map(t =>
-                                                t.id === tache.id
+                                                t.id === task.id
                                                     ? { ...t, contacts: t.contacts.filter((_, i) => i !== index) }
                                                     : t
                                             )
@@ -142,9 +143,9 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
                                     />
                                     <button onClick={() => {
                                         if (nameContact.trim() !== "") {
-                                            setListTaches(prevTaches =>
+                                            setTasks(prevTaches =>
                                                 prevTaches.map(t =>
-                                                    t.id === tache.id
+                                                    t.id === task.id
                                                         ? { ...t, contacts: [...(t.contacts || []), { name: nameContact }] }
                                                         : t
                                                 )
@@ -162,7 +163,7 @@ export default function ToDoItem({ tache, listTaches, setListTaches }) {
                     )}
                 </div>
                 <div className="task-buttons">
-                    <button onClick={() => handleDelete(tache.id)}>Supprimer</button>
+                    <button onClick={() => handleDelete(task.id)}>Supprimer</button>
                     <button onClick={() => setShowPopup(prev => !prev)}>Modifier</button>
                 </div>
             </div>
