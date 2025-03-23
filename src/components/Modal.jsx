@@ -1,12 +1,10 @@
 import ToDoForm from "./ToDoForm";
 import CategoryForm from "./CategoryForm";
 import React, {useState} from "react";
-import {useToDo} from "../context/ToDoContext";
 
 export default function Modal({ setShowPopup }) {
-    const { tasks, setTasks } = useToDo();
-    const [formType, setFormType] = useState("");
-    const [selectedForm, setSelectedForm] = useState("");
+    const [formType, setFormType] = useState("task");
+    const [selectedForm, setSelectedForm] = useState("task");
 
     const showTaskForm = () => {
         setFormType("task");

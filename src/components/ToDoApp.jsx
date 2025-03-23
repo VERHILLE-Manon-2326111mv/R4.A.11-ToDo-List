@@ -6,7 +6,7 @@ import {ToDoProvider} from "../context/ToDoContext";
 // Import des composants
 import Footer from './layout/Footer';
 import Header from './layout/Header';
-import ToDoList from "./ToDoList";
+import List from "./List";
 
 // Import des fichiers CSS
 import '../css/App.css';
@@ -21,7 +21,7 @@ function ToDoApp() {
                 <Header />
 
                 {/* Affichage du Main : Liste des tâches*/}
-                <ToDoList />
+                <List />
 
                 {/* Affichage du Footer : Crédit et bouton "Ajouter" (+)*/}
                 <Footer />

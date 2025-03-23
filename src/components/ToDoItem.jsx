@@ -11,7 +11,7 @@ export default function ToDoItem({ task }) {
     const [showAddContact, setShowAddContact] = useState(false);
 
     return (
-        <div className="task-description">
+        <div className="description">
             <h4>Description :</h4>
             {!showPopup ? (
                 <p>{task.description}</p>
@@ -83,7 +83,7 @@ export default function ToDoItem({ task }) {
                 />
             )}
 
-            <div className="task-description-end">
+            <div className="description-end">
                 <div className="contacts">
                     <h4>Contacts :</h4>
                     {!showPopup ? (

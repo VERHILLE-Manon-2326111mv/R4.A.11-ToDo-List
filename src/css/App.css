@@ -59,13 +59,22 @@ main{
   justify-content: center;
 }
 
-.tacks-list {
-  list-style-type: none;
+.list{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  width: 50%;
+  justify-content: center;
+  width: 100%;
 }
 
-.tacks-list-li {
+.list-ul {
+  list-style-type: none;
+  padding: 0;
+  width: 100%;
+}
+
+.list-ul-li {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -74,6 +83,43 @@ main{
     border: 2px solid #1F63DE;
     border-radius: 0.5em;
     box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.2);
+    width: 100%;
+}
+
+.orange{
+  border-color: #FF7900;
+}
+
+.pink{
+  border-color: #FF8B7C;
+}
+
+.bluesky{
+  border-color: #33CCFF;
+}
+
+.yellow{
+  border-color: #FED100;
+}
+
+.red{
+  border-color: #990000;
+}
+
+.green{
+  border-color: #53DE94;
+}
+
+.purple{
+  border-color: #9966ff;
+}
+
+.blue{
+  border-color: #00008E;
+}
+
+.brown{
+  border-color: #B25600;
 }
 
 .task-name{
@@ -191,13 +237,13 @@ input[type="checkbox"]:focus {
   }
 }
 
-.task-description{
+.description{
     border-top: 2px solid #1F63DE;
     margin-top: 0.5em;
     padding-top : 0.5em;
 }
 
-.task-description-end{
+.description-end{
   position: relative;
     display: flex;
     flex-direction: row;
@@ -232,6 +278,19 @@ input[type="checkbox"]:focus {
   font-size: 1em;
   color: white;
   position: relative;
+}
+
+.list-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1em;
+}
+
+.list-content button{
+  padding: 0.6em;
+  margin: 0.5em;
 }
 
 button{

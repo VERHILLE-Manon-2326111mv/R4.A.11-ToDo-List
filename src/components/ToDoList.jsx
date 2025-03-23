@@ -4,7 +4,7 @@ import ToDoItem from "./ToDoItem";
 import ToDoFilter from "./ToDoFilter";
 
 export default function ToDoList() {
-    const { tasks, setTasks } = useToDo();
+    const { tasks, setTasks, categories, relations } = useToDo();
     const [showTasks, setShowTasks] = useState({});
     const [ordreTri, setOrdreTri] = useState("tri_date_echeance");
     const [typeFiltre, setTypeFiltre] = useState("all");
@@ -87,32 +87,33 @@ export default function ToDoList() {
         setTypeFiltre(value);
     };
 
-    return (
-        <main>
-            <h2>Filtrer les tâches :</h2>
-            <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery}/>
-            <h2>Liste des tâches :</h2>
-            <ul className="tacks-list">
-                {tasks.map(task => (
-                    <li className="tacks-list-li" key={task.id}>
-                        <div className="task-name">
-                            <input type="checkbox" checked={task.done} onChange={(e) => {
-                                setTasks(prevTaches =>
-                                    prevTaches.map(t =>
-                                        t.id === task.id ? { ...t, done: e.target.checked } : t
-                                    )
-                                );
-                            }}></input>
-                            <h3 className={"task-" + task.done}>{task.title}</h3>
-                            <p>Fini le {task.date_echeance}</p>
-                            <button id={"item-" + task.id} onClick={() => toggleTasks(task.id)}>
-                                {showTasks[task.id] ? "⇑" : "⇓"}
-                            </button>
-                        </div>
-                        {showTasks[task.id] && (<ToDoItem task={task}/>)}
-                    </li>
-                ))}
-            </ul>
-        </main>
+    return (<div id="list">
+        <h2>Filtrer les tâches :</h2>
+        <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery}/>
+        <h2>Liste des tâches :</h2>
+        <ul className="list-ul">
+            {tasks.map(task => (
+                <li className="list-ul-li" key={task.id}>
+                    <div className="task-name">
+                        <input type="checkbox" checked={task.done} onChange={(e) => {
+                            setTasks(prevTaches =>
+                                prevTaches.map(t =>
+                                    t.id === task.id ? { ...t, done: e.target.checked } : t
+                                )
+                            );
+                        }}></input>
+                        <h3 className={"task-" + task.done}>{task.title}</h3>
+                        <p>Catégorie</p>
+                        <p>Fini le {task.date_echeance}</p>
+                        <button id={"item-" + task.id} onClick={() => toggleTasks(task.id)}>
+                            {showTasks[task.id] ? "⇑" : "⇓"}
+                        </button>
+                    </div>
+                    {showTasks[task.id] && (<ToDoItem task={task}/>)}
+                </li>
+            ))}
+        </ul>
+    </div>
+
     );
 }
