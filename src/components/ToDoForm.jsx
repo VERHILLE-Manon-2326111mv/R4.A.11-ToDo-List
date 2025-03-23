@@ -15,7 +15,7 @@ export default function ToDoForm() {
     const {tasks, setTasks} = useToDo();
 
     // Fonction pour ajouter un contact à la liste
-    const ajouterContact = () => {
+    const addContact = () => {
         const newContact = {
             name: contact
         }
@@ -24,10 +24,10 @@ export default function ToDoForm() {
     };
 
     // Fonction pour ajouter une tâche à la liste
-    const ajouterTache = () => {
+    const addTask = () => {
         let date = new Date();
 
-        const nouvelleTache = {
+        const newTask = {
             id: tasks.length,
             title: title,
             description: description,
@@ -38,9 +38,9 @@ export default function ToDoForm() {
             contacts: contacts
         };
 
-        console.log(nouvelleTache);
+        console.log(newTask);
 
-        setTasks(prevTaches => [...prevTaches, nouvelleTache]);
+        setTasks(prevTaches => [...prevTaches, newTask]);
 
         setTitle("");
         setDescription("");
@@ -51,7 +51,8 @@ export default function ToDoForm() {
         setContacts([]);
     };
     // Mise en page du formulaire
-    return <div>
+    return(
+        <div>
             <label>Nom de la tâche :</label>
             <input type="text" placeholder="Nom de la tâche" minLength={5} value={title} onChange={(e) => setTitle(e.target.value)} required/>
 
@@ -77,7 +78,7 @@ export default function ToDoForm() {
 
             <label>Liste de contacts :</label>
             <input type="text" placeholder="Nom du contact" minLength={10} value={contact} onChange={(e) => setContact(e.target.value)}/>
-            <button type="button" onClick={ajouterContact}>Ajouter un contact</button>
+            <button type="button" onClick={addContact}>Ajouter un contact</button>
 
             <label>Liste des contacts ajoutés :</label>
             <ul>
@@ -97,6 +98,6 @@ export default function ToDoForm() {
                 ))}
             </ul>
 
-            <button onClick={ajouterTache}>Ajouter</button>
-        </div>;
+            <button onClick={addTask}>Ajouter</button>
+        </div>);
 }
