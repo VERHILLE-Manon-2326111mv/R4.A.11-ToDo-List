@@ -1,20 +1,50 @@
 import React, { useState } from "react";
 import { useToDo } from "../context/ToDoContext";
 
-export default function ToDoItem({ task }) {
+export default function ToDoItem({ task, listCatTask }) {
+    const {setTasks, categories, setRelations} = useToDo()
+
     const handleDelete = (id) => {
         setTasks(prevTaches => prevTaches.filter(tache => tache.id !== id));
     };
-    const {setTasks} = useToDo()
     const [showPopup, setShowPopup] = useState(false);
     const [nameContact, setNameContact] = useState("");
     const [showAddContact, setShowAddContact] = useState(false);
+    const [category, setCategory] = useState("");
+
+    const [categoriesList, setCategoriesList] = useState(listCatTask(task.id));
+    let backupCategories = [...categories];
+
+    const addRelation = (taskId) => {
+        if (!category) return;
+
+        const relationExists = categoriesList.some(cat => cat.id === Number(category));
+        if (relationExists) {
+            alert("Cette catégorie est déjà ajoutée à cette tâche !");
+            return;
+        }
+
+        const newRelation = { tache: taskId, categorie: Number(category) };
+
+        setRelations(prevRelations => [...prevRelations, newRelation]);
+
+        const newCategory = categories.find(cat => cat.id === Number(category));
+        setCategoriesList(prevCategories => [...prevCategories, newCategory]);
+
+        setCategory("");
+    };
+
+    const removeRelation = (taskId, categoryId) => {
+        setRelations(prevRelations => prevRelations.filter(rel => !(rel.tache === taskId && rel.categorie === categoryId)));
+
+        setCategoriesList(prevCategories => prevCategories.filter(cat => cat.id !== categoryId));
+    };
 
     return (
         <div className="description">
             <h4>Description :</h4>
             {!showPopup ? (
-                <p>{task.description}</p>
+                <p>{task.description || 'Aucune description saisie'}</p>
             ) : (
                 <textarea
                     id="Description"
@@ -27,6 +57,41 @@ export default function ToDoItem({ task }) {
                         );
                     }}
                 ></textarea>
+            )}
+
+            <h4>Catégories :</h4>
+            {!showPopup ? (
+                categoriesList.length > 0 ? (
+                    <ul className="categories-list">
+                        {categoriesList.map((cat, index) => (
+                            <li key={index} className={"category-item " + cat.color}>
+                                {(cat.icon ? cat.icon : "") + cat.title}
+                            </li>
+                        ))}
+                    </ul>
+                ) : (
+                    "Aucune catégorie enregistrée"
+                )
+            ) : (
+                <div>
+                    <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                        <option value="">Sélectionner une catégorie</option>
+                        {backupCategories.map((cat, index) => (
+                            <option key={index} value={cat.id}>{cat.title}</option>
+                        ))}
+                    </select>
+                    <button onClick={() => addRelation(task.id)}>Ajouter</button>
+                    {categoriesList.length > 0 && (
+                        <ul className="categories-list">
+                            {categoriesList.map((cat, index) => (
+                                <li key={index} className={"category-item " + cat.color}>
+                                    {(cat.icon ? cat.icon : "") + cat.title}
+                                    <button onClick={() => removeRelation(task.id, cat.id)}>❌</button>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             )}
 
             <h4>Date de création :</h4>
@@ -68,7 +133,7 @@ export default function ToDoItem({ task }) {
 
             <h4>Statut :</h4>
             {!showPopup ? (
-                <p>{task.done ? "En cours" : "Terminée"}</p>
+                <p>{!task.done ? "En cours" : "Terminée"}</p>
             ) : (
                 <input
                     type="checkbox"

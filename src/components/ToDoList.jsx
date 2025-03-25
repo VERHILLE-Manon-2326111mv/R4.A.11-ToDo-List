@@ -11,6 +11,14 @@ export default function ToDoList() {
     const listTachesOriginal = [...tasks];
     const [searchQuery, setSearchQuery] = useState("");
 
+    const listCatTask = (id) => {
+        return relations
+            .filter(relation => relation.tache ===  id)
+            .map(relation => categories.find(cat => cat.id === relation.categorie))
+            .filter(title => title !== undefined);
+    };
+
+
     const toggleTasks = (taskId) => {
         setShowTasks(prev => ({
             ...prev,
@@ -76,7 +84,7 @@ export default function ToDoList() {
                 break;
         }
 
-        setTasks(newList); // 🔥 Mise à jour du contexte
+        setTasks(newList);
     }, [ordreTri, typeFiltre, searchQuery, listTachesOriginal]);
 
     const trier = (value) => {
@@ -91,29 +99,44 @@ export default function ToDoList() {
         <h2>Filtrer les tâches :</h2>
         <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery}/>
         <h2>Liste des tâches :</h2>
-        <ul className="list-ul">
-            {tasks.map(task => (
-                <li className="list-ul-li" key={task.id}>
-                    <div className="task-name">
-                        <input type="checkbox" checked={task.done} onChange={(e) => {
-                            setTasks(prevTaches =>
-                                prevTaches.map(t =>
-                                    t.id === task.id ? { ...t, done: e.target.checked } : t
-                                )
-                            );
-                        }}></input>
-                        <h3 className={"task-" + task.done}>{task.title}</h3>
-                        <p>Catégorie</p>
-                        <p>Fini le {task.date_echeance}</p>
-                        <button id={"item-" + task.id} onClick={() => toggleTasks(task.id)}>
-                            {showTasks[task.id] ? "⇑" : "⇓"}
-                        </button>
-                    </div>
-                    {showTasks[task.id] && (<ToDoItem task={task}/>)}
-                </li>
-            ))}
-        </ul>
-    </div>
+            <ul className="list-ul">
+                {tasks.map(task => {
+                    const categoriesList = listCatTask(task.id).slice(0, 3);
+
+                    return (
+                        <li className="list-ul-li" key={task.id}>
+                            <div className="task-name">
+                                <input
+                                    type="checkbox"
+                                    checked={task.done}
+                                    onChange={(e) => {
+                                        setTasks(prevTaches =>
+                                            prevTaches.map(t =>
+                                                t.id === task.id ? { ...t, done: e.target.checked } : t
+                                            )
+                                        );
+                                    }}
+                                />
+                                <h3 className={"task-" + task.done}>{task.title}</h3>
+                                {categoriesList.length > 0 && (
+                                    <ul className="categories-list">
+                                        {categoriesList.map((cat, index) => (
+                                            <li key={index} className={"category-item " + cat.color}>{(cat.icon ? cat.icon : "") + cat.title}</li>
+                                        ))}
+                                    </ul>
+                                )}
+                                <p>Fini le {task.date_echeance}</p>
+                                <button id={"item-" + task.id} onClick={() => toggleTasks(task.id)}>
+                                    {showTasks[task.id] ? "⇑" : "⇓"}
+                                </button>
+                            </div>
+                            {showTasks[task.id] && (<ToDoItem task={task} listCatTask={listCatTask}/>)}
+                        </li>
+                    );
+                })}
+            </ul>
+
+        </div>
 
     );
 }

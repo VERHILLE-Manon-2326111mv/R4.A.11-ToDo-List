@@ -87,39 +87,58 @@ main{
 }
 
 .orange{
-  border-color: #FF7900;
+  border: 2px solid #FF7900;
 }
 
 .pink{
-  border-color: #FF8B7C;
+  border: 2px solid #FF8B7C;
 }
 
 .bluesky{
-  border-color: #33CCFF;
+  border: 2px solid #33CCFF;
 }
 
 .yellow{
-  border-color: #FED100;
+  border: 2px solid #FED100;
 }
 
 .red{
-  border-color: #990000;
+  border: 2px solid #990000;
 }
 
 .green{
-  border-color: #53DE94;
+  border: 2px solid #53DE94;
 }
 
 .purple{
-  border-color: #9966ff;
+  border: 2px solid #9966ff;
 }
 
 .blue{
-  border-color: #00008E;
+  border: 2px solid #00008E;
 }
 
 .brown{
-  border-color: #B25600;
+  border: 2px solid #B25600;
+}
+
+.categories-list{
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1em;
+}
+
+.category-item{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0.5em;
+  border-radius: 0.5em;
+  box-shadow: 0 0.4em 1em rgba(0, 0, 0, 0.2);
+  width: 100%;
+
 }
 
 .task-name{
