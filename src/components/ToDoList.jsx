@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useToDo } from "../context/ToDoContext";
 import ToDoItem from "./ToDoItem";
 import ToDoFilter from "./ToDoFilter";
@@ -8,16 +8,14 @@ export default function ToDoList() {
     const [showTasks, setShowTasks] = useState({});
     const [ordreTri, setOrdreTri] = useState("tri_date_echeance");
     const [typeFiltre, setTypeFiltre] = useState("all");
-    const listTachesOriginal = [...tasks];
     const [searchQuery, setSearchQuery] = useState("");
 
     const listCatTask = (id) => {
         return relations
-            .filter(relation => relation.tache ===  id)
+            .filter(relation => relation.tache === id)
             .map(relation => categories.find(cat => cat.id === relation.categorie))
             .filter(title => title !== undefined);
     };
-
 
     const toggleTasks = (taskId) => {
         setShowTasks(prev => ({
@@ -35,8 +33,16 @@ export default function ToDoList() {
 
     const stripLeadingNumbers = (str) => str.replace(/^\d+\.\s*/, "");
 
-    useEffect(() => {
-        let newList = [...listTachesOriginal];
+    const getFilteredTasks = () => {
+        let newList = [...tasks];
+
+        const oneWeekAgo = new Date();
+        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+        newList = newList.filter(tache => {
+            if (!tache.date_echeance) return true;
+            return parseDate(tache.date_echeance) >= oneWeekAgo;
+        });
 
         switch (typeFiltre) {
             case "not_done":
@@ -78,14 +84,21 @@ export default function ToDoList() {
                 newList.sort((a, b) => parseDate(b.date_echeance) - parseDate(a.date_echeance));
                 break;
             case "tri_categorie":
-                newList.sort((a, b) => (a.categories?.[0] || "").localeCompare(b.categories?.[0] || ""));
+                newList.sort((a, b) => {
+                    const getFirstCategory = (taskId) => {
+                        const relation = relations.find(r => r.tache === taskId);
+                        return relation ? categories.find(cat => cat.id === relation.categorie)?.title || "" : "";
+                    };
+                    return getFirstCategory(a.id).localeCompare(getFirstCategory(b.id));
+                });
                 break;
+
             default:
                 break;
         }
 
-        setTasks(newList);
-    }, [ordreTri, typeFiltre, searchQuery, listTachesOriginal]);
+        return newList;
+    };
 
     const trier = (value) => {
         setOrdreTri(value);
@@ -95,12 +108,15 @@ export default function ToDoList() {
         setTypeFiltre(value);
     };
 
-    return (<div id="list">
-        <h2>Filtrer les tâches :</h2>
-        <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery}/>
-        <h2>Liste des tâches :</h2>
+    const filteredTasks = getFilteredTasks();
+
+    return (
+        <div id="list">
+            <h2>Filtrer les tâches :</h2>
+            <ToDoFilter trier={trier} filtrer={filtrer} rechercher={setSearchQuery} />
+            <h2>Liste des tâches :</h2>
             <ul className="list-ul">
-                {tasks.map(task => {
+                {filteredTasks.map(task => {
                     const categoriesList = listCatTask(task.id).slice(0, 3);
 
                     return (
@@ -121,7 +137,9 @@ export default function ToDoList() {
                                 {categoriesList.length > 0 && (
                                     <ul className="categories-list">
                                         {categoriesList.map((cat, index) => (
-                                            <li key={index} className={"category-item " + cat.color}>{(cat.icon ? cat.icon : "") + cat.title}</li>
+                                            <li key={index} className={"category-item " + cat.color}>
+                                                {(cat.icon ? cat.icon : "") + cat.title}
+                                            </li>
                                         ))}
                                     </ul>
                                 )}
@@ -130,13 +148,11 @@ export default function ToDoList() {
                                     {showTasks[task.id] ? "⇑" : "⇓"}
                                 </button>
                             </div>
-                            {showTasks[task.id] && (<ToDoItem task={task} listCatTask={listCatTask}/>)}
+                            {showTasks[task.id] && (<ToDoItem task={task} listCatTask={listCatTask} />)}
                         </li>
                     );
                 })}
             </ul>
-
         </div>
-
     );
 }
