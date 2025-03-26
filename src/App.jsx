@@ -1,17 +1,18 @@
+// Import de React
 import React from "react";
 
 // Import des useContext
-import {ToDoProvider} from "../context/ToDoContext";
+import {ToDoProvider} from "./context/ToDoContext";
 
 // Import des composants
-import Footer from './layout/Footer';
-import Header from './layout/Header';
-import List from "./List";
+import Footer from './components/layout/Footer';
+import Header from './components/layout/Header';
+import List from "./components/List";
 
 // Import des fichiers CSS
-import '../css/App.css';
+import './css/App.css';
 
-function ToDoApp() {
+function App() {
 
     return (
         // Mise en place de l'useContext.
@@ -30,4 +31,5 @@ function ToDoApp() {
     );
 }
 
-export default ToDoApp;
+// Export de App
+export default App;

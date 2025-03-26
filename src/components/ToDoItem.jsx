@@ -2,21 +2,27 @@ import React, { useState } from "react";
 import { useToDo } from "../context/ToDoContext";
 
 export default function ToDoItem({ task, listCatTask }) {
-    const {setTasks, categories, setRelations} = useToDo()
+    // Accès aux fonctions du contexte pour mettre à jour les tâches et les relations
+    const { setTasks, categories, setRelations } = useToDo();
 
+    // Fonction pour supprimer une tâche
     const handleDelete = (id) => {
         setTasks(prevTaches => prevTaches.filter(tache => tache.id !== id));
     };
-    const [showPopup, setShowPopup] = useState(false);
-    const [nameContact, setNameContact] = useState("");
-    const [showAddContact, setShowAddContact] = useState(false);
-    const [category, setCategory] = useState("");
 
+    // États pour gérer l'affichage de la popup, des contacts et des catégories
+    const [showPopup, setShowPopup] = useState(false); // Afficher ou non la popup d'édition
+    const [nameContact, setNameContact] = useState(""); // Nom du contact à ajouter
+    const [showAddContact, setShowAddContact] = useState(false); // Afficher ou non le champ d'ajout de contact
+    const [category, setCategory] = useState(""); // Catégorie à ajouter
+
+    // Liste des catégories associées à la tâche
     const [categoriesList, setCategoriesList] = useState(listCatTask(task.id));
-    let backupCategories = [...categories];
+    let backupCategories = [...categories]; // Copie des catégories pour les utiliser dans la sélection
 
+    // Ajouter une relation entre une tâche et une catégorie
     const addRelation = (taskId) => {
-        if (!category) return;
+        if (!category) return; // Si aucune catégorie n'est sélectionnée, ne rien faire
 
         const relationExists = categoriesList.some(cat => cat.id === Number(category));
         if (relationExists) {
@@ -31,9 +37,10 @@ export default function ToDoItem({ task, listCatTask }) {
         const newCategory = categories.find(cat => cat.id === Number(category));
         setCategoriesList(prevCategories => [...prevCategories, newCategory]);
 
-        setCategory("");
+        setCategory(""); // Réinitialiser la sélection de catégorie
     };
 
+    // Supprimer une relation entre une tâche et une catégorie
     const removeRelation = (taskId, categoryId) => {
         setRelations(prevRelations => prevRelations.filter(rel => !(rel.tache === taskId && rel.categorie === categoryId)));
 
@@ -43,6 +50,7 @@ export default function ToDoItem({ task, listCatTask }) {
     return (
         <div className="description">
             <h4>Description :</h4>
+            {/* Affichage de la description de la tâche */}
             {!showPopup ? (
                 <p>{task.description || 'Aucune description saisie'}</p>
             ) : (
@@ -60,6 +68,7 @@ export default function ToDoItem({ task, listCatTask }) {
             )}
 
             <h4>Catégories :</h4>
+            {/* Affichage des catégories associées ou possibilité d'ajouter des catégories */}
             {!showPopup ? (
                 categoriesList.length > 0 ? (
                     <ul className="categories-list">
@@ -98,6 +107,7 @@ export default function ToDoItem({ task, listCatTask }) {
             <p>Créée le {task.date_creation}</p>
 
             <h4>Échéance :</h4>
+            {/* Affichage de la date d'échéance de la tâche */}
             {!showPopup ? (
                 <p>Se termine le {task.date_echeance}</p>
             ) : (
@@ -115,6 +125,7 @@ export default function ToDoItem({ task, listCatTask }) {
             )}
 
             <h4>Degré de la tâche :</h4>
+            {/* Affichage du statut d'urgence de la tâche */}
             {!showPopup ? (
                 <p>{task.urgent ? "Urgent" : "Pas urgent"}</p>
             ) : (
@@ -132,6 +143,7 @@ export default function ToDoItem({ task, listCatTask }) {
             )}
 
             <h4>Statut :</h4>
+            {/* Affichage du statut d'accomplissement de la tâche */}
             {!showPopup ? (
                 <p>{!task.done ? "En cours" : "Terminée"}</p>
             ) : (
@@ -151,6 +163,7 @@ export default function ToDoItem({ task, listCatTask }) {
             <div className="description-end">
                 <div className="contacts">
                     <h4>Contacts :</h4>
+                    {/* Affichage des contacts ou ajout de nouveaux contacts */}
                     {!showPopup ? (
                         task.contacts.length > 0 ? (
                             <ul>
@@ -228,6 +241,7 @@ export default function ToDoItem({ task, listCatTask }) {
                     )}
                 </div>
                 <div className="task-buttons">
+                    {/* Boutons pour supprimer ou modifier la tâche */}
                     <button onClick={() => handleDelete(task.id)}>Supprimer</button>
                     <button onClick={() => setShowPopup(prev => !prev)}>Modifier</button>
                 </div>

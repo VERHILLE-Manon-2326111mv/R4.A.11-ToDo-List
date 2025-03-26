@@ -1,24 +1,30 @@
-import React, {useState} from "react";
-import {useToDo} from "../context/ToDoContext";
+import React, { useState } from "react";
+import { useToDo } from "../context/ToDoContext";
 
-export default function CategoryItem({cat}) {
+export default function CategoryItem({ cat }) {
+    const { setCategories } = useToDo();
+    const [showEdit, setShowEdit] = useState(false);
+
+    // Fonction pour supprimer une catégorie
     const handleDelete = (id) => {
         setCategories(prevCat => prevCat.filter(c => c.id !== id));
     };
-    const {setCategories} = useToDo()
-    const [showEdit, setShowEdit] = useState(false);
 
     return (
         <div className="description">
             <h4>Description :</h4>
+
+            {/* Affichage de la description, si on est en mode édition */}
             {!showEdit ? (
                 <p>{cat.description}</p>
             ) : (
                 <div>
+                    {/* Champ texte pour modifier la description de la catégorie */}
                     <textarea
                         id="Description"
                         value={cat.description || ''}
                         onChange={(e) => {
+                            // Met à jour la description de la catégorie dans le contexte
                             setCategories(prevCat =>
                                 prevCat.map(c =>
                                     c.id === cat.id ? { ...c, description: e.target.value } : c
@@ -28,7 +34,9 @@ export default function CategoryItem({cat}) {
                     ></textarea>
 
                     <h4>Couleur :</h4>
+                    {/* Sélecteur pour changer la couleur de la catégorie */}
                     <select value={cat.color} onChange={(e) => {
+                        // Met à jour la couleur de la catégorie dans le contexte
                         setCategories(prevCat =>
                             prevCat.map(c =>
                                 c.id === cat.id ? { ...c, color: e.target.value } : c
@@ -47,7 +55,9 @@ export default function CategoryItem({cat}) {
                     </select>
 
                     <h4>Icône : </h4>
+                    {/* Sélecteur pour changer l'icône de la catégorie */}
                     <select value={cat.icon} onChange={(e) => {
+                        // Met à jour l'icône de la catégorie dans le contexte
                         setCategories(prevCat =>
                             prevCat.map(c =>
                                 c.id === cat.id ? { ...c, icon: e.target.value } : c
@@ -67,9 +77,14 @@ export default function CategoryItem({cat}) {
                     </select>
                 </div>
             )}
+
+            {/* Section avec les boutons pour supprimer ou modifier la catégorie */}
             <div className="description-end">
                 <div className="task-buttons">
+                    {/* Bouton pour supprimer la catégorie */}
                     <button onClick={() => handleDelete(cat.id)}>Supprimer</button>
+
+                    {/* Bouton pour basculer en mode édition */}
                     <button onClick={() => setShowEdit(prev => !prev)}>Modifier</button>
                 </div>
             </div>
