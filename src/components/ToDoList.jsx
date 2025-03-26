@@ -34,15 +34,7 @@ export default function ToDoList() {
     const stripLeadingNumbers = (str) => str.replace(/^\d+\.\s*/, "");
 
     const getFilteredTasks = () => {
-        let newList = [...tasks];
-
-        const oneWeekAgo = new Date();
-        oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-        newList = newList.filter(tache => {
-            if (!tache.date_echeance) return true;
-            return parseDate(tache.date_echeance) >= oneWeekAgo;
-        });
+        let newList = [...tasks]
 
         switch (typeFiltre) {
             case "not_done":
@@ -99,6 +91,8 @@ export default function ToDoList() {
 
         return newList;
     };
+
+
 
     const trier = (value) => {
         setOrdreTri(value);
